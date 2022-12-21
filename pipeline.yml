@@ -1,0 +1,19 @@
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Dataiku CLI
+      run: |
+        sudo apt-get update
+        sudo apt-get install default-jre -y
+        wget https://downloads.dataiku.com/public/dss/7.1.0/dataiku-dss-7.1.0.tar.gz
+        tar -xzf dataiku-dss-7.1.0.tar.gz
+        rm dataiku-dss-7.1.0.tar.gz
+        sudo ln -s "$PWD/dataiku-dss-7.1.0/bin/dss" /usr/local/bin/dss
+    - name: Set up Dataiku CLI
+      run: |
+        dss login -a https://[YOUR_DATAIKU_INSTANCE] -u [YOUR_USERNAME] -p [YOUR_PAT]
+    - name: Run Dataiku recipe
+      run: |
+        dss run-recipe [YOUR_PROJECT_KEY] [YOUR_RECIPE_NAME]
